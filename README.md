@@ -17,10 +17,42 @@ This framework provides a unified toolbar experience across all Heatherwick Stud
 
 ## Installation
 
-The plugin is automatically installed via post-build action to:
+### Yak Package Installation (Recommended)
+1. Download the latest `.yak` package from the releases
+2. Double-click the `.yak` file or drag it into Rhino's Package Manager
+3. The plugin will be installed to: `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
+
+### Manual Installation
+The plugin can also be installed manually by copying files to:
 `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 
-Simply build the project and restart Rhino 8.
+## Uninstallation
+
+### Comprehensive Uninstaller (Recommended)
+Use the new comprehensive uninstaller for complete cleanup:
+
+**Batch Version:**
+```cmd
+uninstaller_v2.bat
+```
+
+**PowerShell Version (More Robust):**
+```powershell
+.\uninstaller_v2.ps1
+```
+
+The comprehensive uninstaller will:
+- ✅ Remove all registry entries (current and old GUIDs)
+- ✅ Search and remove any Heatherwick-related registry entries
+- ✅ Remove entries pointing to build output directories
+- ✅ Clean up toolbar references
+- ✅ Remove plugin files from Yak installation directory
+- ✅ Clean up temporary files
+- ✅ Verify complete removal
+- ✅ Provide detailed status reporting
+
+### Legacy Uninstaller
+The old uninstaller (`uninstaller.bat`/`uninstaller.ps1`) is still available but may not remove all registry entries completely.
 
 ## Quick Start for Plugin Developers
 
