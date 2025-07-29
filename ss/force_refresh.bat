@@ -11,9 +11,8 @@ echo Clearing Rhino plugin cache...
 reg delete "HKEY_CURRENT_USER\Software\McNeel\Rhinoceros\8.0\Plug-Ins\Cache" /f 2>nul
 
 REM Remove any old plugin files from packages directory
-set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\8.0\packages
-if exist "%APPDATA_PATH%\Heatherwick Studio Toolbar.rhp" del "%APPDATA_PATH%\Heatherwick Studio Toolbar.rhp"
-if exist "%APPDATA_PATH%\Heatherwick Studio Toolbar.rui" del "%APPDATA_PATH%\Heatherwick Studio Toolbar.rui"
+set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\packages\8.0
+if exist "%APPDATA_PATH%\Heatherwick-Studio-Toolbar" rmdir /S /Q "%APPDATA_PATH%\Heatherwick-Studio-Toolbar"
 
 echo.
 echo Force refresh complete!

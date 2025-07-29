@@ -11,7 +11,7 @@
   
   <PropertyGroup>
     <!-- Specifies information for Assembly and Yak -->
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>Heatherwick Studio Toolbar</Title>
     <Company>Heatherwick Studio</Company>
     <Description>Shared Toolbar Framework for Heatherwick Studio Plugins</Description>
@@ -35,16 +35,19 @@
     </None>
   </ItemGroup>
   
-  <!-- Copy icon to output directory for Yak package -->
+  <!-- Copy icons to output directory for Yak package -->
   <ItemGroup>
     <None Include="EmbeddedResources\plugin-utility.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="EmbeddedResources\ListCommands.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <!-- Post-build action disabled - using Yak package instead -->
   <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if not exist &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar\&quot; mkdir &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.pdb&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.rui&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar\&quot;" />
+    <Exec Command="if not exist &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot; mkdir &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.pdb&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.rui&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;" />
   </Target> -->
   
   <!-- Exclude files from build for testing -->

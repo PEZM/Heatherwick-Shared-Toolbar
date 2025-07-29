@@ -5,7 +5,7 @@ REM ========================================
 REM Heatherwick Studio Toolbar Uninstaller
 REM ========================================
 REM This script completely removes the Heatherwick Studio Toolbar plugin
-REM Version: 1.0.0
+REM Version: 1.0.1
 REM ========================================
 
 echo.
@@ -24,8 +24,8 @@ if %errorLevel% == 0 (
 )
 
 REM Get the user's AppData folder
-set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\8.0\packages
-set PLUGIN_NAME=HeatherwickStudioToolbar
+set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\packages\8.0
+set PLUGIN_NAME=Heatherwick-Studio-Toolbar
 set PLUGIN_DIR=%APPDATA_PATH%\%PLUGIN_NAME%
 
 echo [INFO] Plugin location: %PLUGIN_DIR%
@@ -72,19 +72,48 @@ if "%ERRORLEVEL%"=="0" (
 
 REM Remove registry entries
 echo [INFO] Removing registry entries...
-reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\HeatherwickStudioToolbar" /f >nul 2>&1
+echo [INFO] Cleaning up all possible plugin registry entries...
+
+REM Remove by plugin name
+reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar" /f >nul 2>&1
 if !errorLevel! equ 0 (
-    echo [SUCCESS] Registry entries removed
+    echo [SUCCESS] Registry entries removed (by name)
 ) else (
-    echo [INFO] No registry entries found to remove
+    echo [INFO] No registry entries found by name
+)
+
+REM Remove by current GUID
+reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\12345678-1234-1234-1234-123456789abc" /f >nul 2>&1
+if !errorLevel! equ 0 (
+    echo [SUCCESS] Registry entries removed (current GUID)
+) else (
+    echo [INFO] No registry entries found for current GUID
+)
+
+REM Remove by old GUID
+reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\3856c5bd-1cf1-4bf3-9322-3111c1b2907c" /f >nul 2>&1
+if !errorLevel! equ 0 (
+    echo [SUCCESS] Registry entries removed (old GUID)
+) else (
+    echo [INFO] No registry entries found for old GUID
+)
+
+REM Search for any other Heatherwick-related registry entries
+echo [INFO] Searching for any other Heatherwick-related registry entries...
+for /f "tokens=*" %%i in ('reg query "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins" /f "Heatherwick" 2^>nul') do (
+    echo [INFO] Found additional entry: %%i
+    reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\%%i" /f >nul 2>&1
+    if !errorLevel! equ 0 (
+        echo [SUCCESS] Removed additional entry: %%i
+    )
 )
 
 REM Remove toolbar from Rhino's toolbar list
 echo [INFO] Cleaning up toolbar references...
-reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Toolbars" /v "HeatherwickStudioToolbar" /f >nul 2>&1
+reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Toolbars" /v "Heatherwick-Studio-Toolbar" /f >nul 2>&1
 
 REM Remove from Rhino's plugin list
-reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins" /v "HeatherwickStudioToolbar" /f >nul 2>&1
+reg delete "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins" /v "Heatherwick-Studio-Toolbar" /f >nul 2>&1
 
 REM Remove plugin files
 echo [INFO] Removing plugin files...
@@ -145,11 +174,28 @@ if not exist "%PLUGIN_DIR%" (
     set VERIFY_FAILED=1
 )
 
-reg query "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\HeatherwickStudioToolbar" >nul 2>&1
+REM Check for any remaining registry entries
+reg query "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar" >nul 2>&1
 if !errorLevel! neq 0 (
-    echo [✓] Registry entries removed
+    echo [✓] Registry entries removed (by name)
 ) else (
-    echo [✗] Registry entries still exist
+    echo [✗] Registry entries still exist (by name)
+    set VERIFY_FAILED=1
+)
+
+reg query "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\12345678-1234-1234-1234-123456789abc" >nul 2>&1
+if !errorLevel! neq 0 (
+    echo [✓] Registry entries removed (current GUID)
+) else (
+    echo [✗] Registry entries still exist (current GUID)
+    set VERIFY_FAILED=1
+)
+
+reg query "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\3856c5bd-1cf1-4bf3-9322-3111c1b2907c" >nul 2>&1
+if !errorLevel! neq 0 (
+    echo [✓] Registry entries removed (old GUID)
+) else (
+    echo [✗] Registry entries still exist (old GUID)
     set VERIFY_FAILED=1
 )
 

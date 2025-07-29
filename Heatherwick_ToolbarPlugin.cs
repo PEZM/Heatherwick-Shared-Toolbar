@@ -33,7 +33,7 @@ namespace HeatherwickStudio.Toolbar
         {
             try
             {
-                RhinoApp.WriteLine("Heatherwick Studio Toolbar plugin loading...");
+                RhinoApp.WriteLine("=== Heatherwick Studio Toolbar plugin loading... ===");
                 
                 // Create the toolbar
                 CreateToolbar();
@@ -41,15 +41,29 @@ namespace HeatherwickStudio.Toolbar
                 // Initialize the shared toolbar framework
                 try
                 {
+                    RhinoApp.WriteLine("Initializing shared toolbar framework...");
                     DynamicToolbarManager.Instance.CreateOrUpdateToolbar();
                     RegisterEssentialCommands();
+                    RhinoApp.WriteLine("Shared toolbar framework initialized successfully!");
                 }
                 catch (Exception frameworkEx)
                 {
                     RhinoApp.WriteLine($"Warning: Shared toolbar framework not available: {frameworkEx.Message}");
+                    RhinoApp.WriteLine("Falling back to basic command registration...");
+                    
+                    // Fallback: basic command discovery
+                    var commands = this.GetType().Assembly.GetTypes()
+                        .Where(t => t.IsSubclassOf(typeof(Rhino.Commands.Command)))
+                        .ToList();
+                    
+                    RhinoApp.WriteLine($"Found {commands.Count} command types for fallback:");
+                    foreach (var cmdType in commands)
+                    {
+                        RhinoApp.WriteLine($"  - {cmdType.FullName}");
+                    }
                 }
                 
-                RhinoApp.WriteLine("Heatherwick Studio Toolbar loaded successfully!");
+                RhinoApp.WriteLine("=== Plugin loaded successfully! ===");
                 
                 return Rhino.PlugIns.LoadReturnCode.Success;
             }
@@ -57,6 +71,7 @@ namespace HeatherwickStudio.Toolbar
             {
                 errorMessage = $"Failed to load Heatherwick Studio Toolbar: {ex.Message}";
                 RhinoApp.WriteLine($"Plugin load error: {errorMessage}");
+                RhinoApp.WriteLine($"Exception details: {ex}");
                 return Rhino.PlugIns.LoadReturnCode.ErrorShowDialog;
             }
         }
@@ -125,25 +140,41 @@ namespace HeatherwickStudio.Toolbar
         {
             try
             {
-                // Register the list commands function
-                DynamicToolbarManager.Instance.RegisterButton(
+                RhinoApp.WriteLine("=== Registering Commands with Icons ===");
+                
+                // Debug: List all embedded resources
+                var assembly = this.GetType().Assembly;
+                var resources = assembly.GetManifestResourceNames();
+                RhinoApp.WriteLine($"Available embedded resources ({resources.Length}):");
+                foreach (var resource in resources)
+                {
+                    RhinoApp.WriteLine($"  - {resource}");
+                }
+                
+                // Register the list commands function with its own icon
+                RhinoApp.WriteLine("Registering Heatherwick_ListCommands with ListCommands.ico...");
+                ToolbarHelper.RegisterPluginButton(
                     this.Id.ToString(),
                     "Heatherwick_ListCommands",
-                    LoadHeatherwickIcon(),
+                    "ListCommands.ico",
                     "List all registered Heatherwick Studio commands",
-                    "Utilities"
+                    "Utilities",
+                    this.GetType().Assembly
                 );
                 
-                // Register the load toolbar command
-                DynamicToolbarManager.Instance.RegisterButton(
+                // Register the load toolbar command with the plugin icon
+                RhinoApp.WriteLine("Registering Heatherwick_LoadToolbar with plugin-utility.ico...");
+                ToolbarHelper.RegisterPluginButton(
                     this.Id.ToString(),
                     "Heatherwick_LoadToolbar",
-                    LoadHeatherwickIcon(),
+                    "plugin-utility.ico",
                     "Show toolbar status and instructions",
-                    "Utilities"
+                    "Utilities",
+                    this.GetType().Assembly
                 );
                 
-                RhinoApp.WriteLine("Essential commands registered.");
+                RhinoApp.WriteLine("Essential commands registered with icons.");
+                RhinoApp.WriteLine("=== End Command Registration ===");
             }
             catch (Exception ex)
             {

@@ -12,9 +12,9 @@ A shared toolbar framework for Rhino 8 that provides a centralized interface for
 
 ### Manual Install
 1. Copy `bin\Debug\net7.0\Heatherwick Studio Toolbar.rhp` to:
-   `%APPDATA%\McNeel\Rhinoceros\8.0\packages\`
+   `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 2. Copy `bin\Debug\net7.0\Heatherwick Studio Toolbar.rui` to:
-   `%APPDATA%\McNeel\Rhinoceros\8.0\packages\`
+   `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 3. Restart Rhino 8
 4. The toolbar will be automatically loaded because the RUI file has the same name as the RHP file
 
@@ -84,7 +84,7 @@ DynamicToolbarManager.Instance.RegisterButton(
 2. Add commands to existing toolbars using the Customize dialog
 3. The toolbar file (`.rui`) provides a template for creating toolbars
 4. **Important**: The RUI file must have the exact same name as the RHP file for automatic loading
-5. Check that both files are in the same directory: `%APPDATA%\McNeel\Rhinoceros\8.0\packages\`
+5. Check that both files are in the same directory: `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 
 ## Development
 

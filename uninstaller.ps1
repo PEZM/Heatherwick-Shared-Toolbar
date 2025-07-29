@@ -28,7 +28,7 @@ param(
 # ========================================
 # Heatherwick Studio Toolbar Uninstaller
 # ========================================
-# Version: 1.0.0
+# Version: 1.0.1
 # ========================================
 
 # Set error action preference
@@ -80,8 +80,8 @@ function Uninstall-Plugin {
     }
     
     # Define paths
-    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\8.0\packages"
-    $pluginName = "HeatherwickStudioToolbar"
+    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\packages\8.0"
+    $pluginName = "Heatherwick-Studio-Toolbar"
     $pluginDir = Join-Path $appDataPath $pluginName
     
     Write-Log "Plugin location: $pluginDir"
@@ -95,13 +95,36 @@ function Uninstall-Plugin {
     try {
         # Remove registry entries
         Write-Log "Removing registry entries..."
-        $registryPath = "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\$pluginName"
+        Write-Log "Cleaning up all possible plugin registry entries..."
         
-        if (Test-Path $registryPath) {
-            Remove-Item -Path $registryPath -Recurse -Force -ErrorAction SilentlyContinue
-            Write-Log "Registry entries removed" "SUCCESS"
-        } else {
-            Write-Log "No registry entries found to remove" "INFO"
+        # Define all possible registry paths
+        $registryPaths = @(
+            "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\$pluginName",
+            "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\12345678-1234-1234-1234-123456789abc",
+            "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\3856c5bd-1cf1-4bf3-9322-3111c1b2907c"
+        )
+        
+        foreach ($path in $registryPaths) {
+            if (Test-Path $path) {
+                Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+                Write-Log "Registry entries removed: $($path.Split('\')[-1])" "SUCCESS"
+            } else {
+                Write-Log "No registry entries found: $($path.Split('\')[-1])" "INFO"
+            }
+        }
+        
+        # Search for any other Heatherwick-related registry entries
+        Write-Log "Searching for any other Heatherwick-related registry entries..."
+        $pluginsPath = "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins"
+        if (Test-Path $pluginsPath) {
+            Get-ChildItem -Path $pluginsPath | Where-Object { 
+                $_.Name -like "*Heatherwick*" -or 
+                (Get-ItemProperty -Path $_.PSPath -Name "Name" -ErrorAction SilentlyContinue).Name -like "*Heatherwick*"
+            } | ForEach-Object {
+                Write-Log "Found additional entry: $($_.Name)" "INFO"
+                Remove-Item -Path $_.PSPath -Recurse -Force -ErrorAction SilentlyContinue
+                Write-Log "Removed additional entry: $($_.Name)" "SUCCESS"
+            }
         }
         
         # Remove toolbar references from Rhino's toolbar list
@@ -182,8 +205,8 @@ function Uninstall-Plugin {
 function Test-Uninstallation {
     Write-Log "Verifying uninstallation..."
     
-    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\8.0\packages"
-    $pluginName = "HeatherwickStudioToolbar"
+    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\packages\8.0"
+    $pluginName = "Heatherwick-Studio-Toolbar"
     $pluginDir = Join-Path $appDataPath $pluginName
     $registryPath = "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\$pluginName"
     

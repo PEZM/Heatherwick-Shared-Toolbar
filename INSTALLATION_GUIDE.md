@@ -18,7 +18,7 @@ The plugin was not loading because it was using an old GUID and loading from the
 4. Should show:
    - **Loaded: Yes**
    - **GUID: 12345678-1234-1234-1234-123456789ABC**
-   - **Location: %APPDATA%\McNeel\Rhinoceros\8.0\packages\**
+   - **Location: %APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\**
 
 ### **Step 3: Test Commands**
 1. In Rhino command line, type: `Heatherwick_ListCommands`
@@ -41,7 +41,7 @@ The plugin was not loading because it was using an old GUID and loading from the
 
 ### **Issue 2: Wrong Location**
 - **Old Location**: Visual Studio build directory
-- **New Location**: `%APPDATA%\McNeel\Rhinoceros\8.0\packages\`
+- **New Location**: `%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 - **Solution**: Clean installation to correct directory
 
 ### **Issue 3: Missing Commands**
@@ -58,7 +58,7 @@ The plugin was not loading because it was using an old GUID and loading from the
 
 ### **Correct Installation:**
 ```
-%APPDATA%\McNeel\Rhinoceros\8.0\packages\
+%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\
 ├── Heatherwick Studio Toolbar.rhp
 └── Heatherwick Studio Toolbar.rui
 ```

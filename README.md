@@ -18,7 +18,7 @@ This framework provides a unified toolbar experience across all Heatherwick Stud
 ## Installation
 
 The plugin is automatically installed via post-build action to:
-`%APPDATA%\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\`
+`%APPDATA%\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\`
 
 Simply build the project and restart Rhino 8.
 
@@ -210,7 +210,7 @@ The project includes automatic post-build installation:
 
 ```xml
 <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-  <Exec Command="if not exist &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\&quot; mkdir &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.pdb&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.rui&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\8.0\packages\Heatherwick Studio Toolbar\&quot;" />
+  <Exec Command="if not exist &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot; mkdir &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.pdb&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.rui&quot; &quot;$(APPDATA)\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar\&quot;" />
 </Target>
 ```
 
@@ -308,6 +308,31 @@ The framework provides logging to the Rhino command line. Check for messages sta
 ## Support
 
 For issues or questions about this framework, please refer to the troubleshooting section above or check the Rhino command line for detailed error messages.
+
+## Current Status
+
+### ✅ Working Features
+- Plugin loads successfully in Rhino 8
+- Commands are properly registered and discoverable
+- Embedded resources (icons) are found and loaded correctly
+- Dynamic toolbar framework initializes without errors
+- Yak package distribution works correctly
+- All essential commands (`Heatherwick_ListCommands`, `Heatherwick_LoadToolbar`) are functional
+
+### ❌ Known Limitations
+- **Toolbar Icons Not Displaying**: While the `DynamicToolbarManager` framework successfully loads icons from embedded resources, they are not displayed in Rhino's native toolbar UI. The toolbar shows generic mouse pointer icons instead of the custom icons.
+- **Framework Integration Issue**: The custom `DynamicToolbarManager` and `ToolbarHelper` classes appear to be designed for a different toolbar system than Rhino's native toolbar implementation.
+
+### 🔧 Next Steps
+1. **Investigate Native Rhino Toolbar Integration**: Research how to properly integrate custom icons with Rhino's native toolbar system
+2. **Alternative Icon Loading Methods**: Explore direct command icon assignment or Rhino-specific toolbar customization APIs
+3. **Framework Refactoring**: Consider simplifying the approach by removing the custom framework and using Rhino's built-in toolbar capabilities
+4. **Cross-Plugin Icon Loading**: Once basic icon display is working, implement the ability to load icons from other plugins
+
+### Technical Details
+- Icons are successfully embedded and loaded: `ListCommands.ico` (109KB) and `plugin-utility.ico` (103KB)
+- The `LoadIconFromResources` method correctly finds resources using the pattern `Heatherwick_Studio_Toolbar.EmbeddedResources.{iconName}`
+- Commands are registered with the framework but the visual representation in Rhino's UI is not updated
 
 ## License
 

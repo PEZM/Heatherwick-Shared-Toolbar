@@ -5,7 +5,7 @@ REM ========================================
 REM Heatherwick Studio Toolbar Installer
 REM ========================================
 REM This script installs the Heatherwick Studio Toolbar plugin for Rhino 8
-REM Version: 1.0.0
+REM Version: 1.0.1
 REM ========================================
 
 echo.
@@ -24,8 +24,8 @@ if %errorLevel% == 0 (
 )
 
 REM Get the user's AppData folder
-set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\8.0\packages
-set PLUGIN_NAME=HeatherwickStudioToolbar
+set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\packages\8.0
+set PLUGIN_NAME=Heatherwick-Studio-Toolbar
 set PLUGIN_DIR=%APPDATA_PATH%\%PLUGIN_NAME%
 
 echo [INFO] Installing to: %PLUGIN_DIR%
@@ -114,8 +114,8 @@ echo.
 REM Create manifest file for package management
 echo [INFO] Creating package manifest...
 (
-echo package: HeatherwickStudioToolbar
-echo version: 1.0.0
+echo package: Heatherwick-Studio-Toolbar
+echo version: 1.0.1
 echo description: Shared Toolbar Framework for Heatherwick Studio Plugins
 echo authors: Heatherwick Studio
 echo repository: https://github.com/heatherwickstudio/rhino-toolbar
@@ -137,9 +137,9 @@ echo.
 
 REM Create registry entries for auto-loading (optional)
 echo [INFO] Setting up registry entries...
-reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\HeatherwickStudioToolbar" /v "Name" /t REG_SZ /d "HeatherwickStudioToolbar" /f >nul 2>&1
-reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\HeatherwickStudioToolbar" /v "Path" /t REG_SZ /d "%PLUGIN_DIR%\Heatherwick Studio Toolbar.rhp" /f >nul 2>&1
-reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\HeatherwickStudioToolbar" /v "LoadMode" /t REG_DWORD /d 1 /f >nul 2>&1
+reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar" /v "Name" /t REG_SZ /d "Heatherwick-Studio-Toolbar" /f >nul 2>&1
+reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar" /v "Path" /t REG_SZ /d "%PLUGIN_DIR%\Heatherwick Studio Toolbar.rhp" /f >nul 2>&1
+reg add "HKCU\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar" /v "LoadMode" /t REG_DWORD /d 1 /f >nul 2>&1
 
 echo [SUCCESS] Registry entries created
 echo.

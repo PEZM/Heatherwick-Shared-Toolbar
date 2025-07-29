@@ -268,25 +268,53 @@ namespace HeatherwickStudio.SharedToolbar
             {
                 assembly = assembly ?? Assembly.GetCallingAssembly();
                 
+                RhinoApp.WriteLine($"Trying to load icon: '{resourceName}' from assembly: {assembly.GetName().Name}");
+                
+                // First, try the exact resource name as provided
+                using (var stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (stream != null)
+                    {
+                        RhinoApp.WriteLine($"  ✅ Found resource with exact name: '{resourceName}' (size: {stream.Length} bytes)");
+                        return new Bitmap(stream);
+                    }
+                }
+                
                 // Try different resource name patterns
                 var possibleNames = new[]
                 {
-                    resourceName,
                     $"{assembly.GetName().Name}.{resourceName}",
                     $"{assembly.GetName().Name}.Resources.{resourceName}",
                     $"{assembly.GetName().Name}.Icons.{resourceName}",
-                    $"{assembly.GetName().Name}.EmbeddedResources.{resourceName}"
+                    $"{assembly.GetName().Name}.EmbeddedResources.{resourceName}",
+                    // Try the full embedded resource path
+                    $"Heatherwick_Studio_Toolbar.EmbeddedResources.{resourceName}"
                 };
                 
                 foreach (var name in possibleNames)
                 {
+                    RhinoApp.WriteLine($"  Trying resource name: '{name}'");
                     using (var stream = assembly.GetManifestResourceStream(name))
                     {
                         if (stream != null)
                         {
+                            RhinoApp.WriteLine($"  ✅ Found resource: '{name}' (size: {stream.Length} bytes)");
                             return new Bitmap(stream);
                         }
+                        else
+                        {
+                            RhinoApp.WriteLine($"  ❌ Not found: '{name}'");
+                        }
                     }
+                }
+                
+                // If still not found, list all available resources for debugging
+                RhinoApp.WriteLine($"❌ Could not find icon resource '{resourceName}' in any pattern");
+                RhinoApp.WriteLine("Available resources:");
+                var allResources = assembly.GetManifestResourceNames();
+                foreach (var resource in allResources)
+                {
+                    RhinoApp.WriteLine($"  - {resource}");
                 }
                 
                 return null;

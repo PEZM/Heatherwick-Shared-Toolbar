@@ -28,7 +28,7 @@ param(
 # ========================================
 # Heatherwick Studio Toolbar Installer
 # ========================================
-# Version: 1.0.0
+# Version: 1.0.1
 # ========================================
 
 # Set error action preference
@@ -80,8 +80,8 @@ function Install-Plugin {
     }
     
     # Define paths
-    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\8.0\packages"
-    $pluginName = "HeatherwickStudioToolbar"
+    $appDataPath = "$env:APPDATA\McNeel\Rhinoceros\packages\8.0"
+    $pluginName = "Heatherwick-Studio-Toolbar"
     $pluginDir = Join-Path $appDataPath $pluginName
     $sourceDir = "bin\Debug\net7.0"
     
@@ -166,8 +166,8 @@ function Install-Plugin {
         # Create manifest file
         Write-Log "Creating package manifest..."
         $manifestContent = @"
-package: HeatherwickStudioToolbar
-version: 1.0.0
+        package: Heatherwick-Studio-Toolbar
+        version: 1.0.1
 description: Shared Toolbar Framework for Heatherwick Studio Plugins
 authors: Heatherwick Studio
 repository: https://github.com/heatherwickstudio/rhino-toolbar
@@ -190,13 +190,13 @@ files:
         
         # Create registry entries
         Write-Log "Setting up registry entries..."
-        $registryPath = "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\$pluginName"
+        $registryPath = "HKCU:\Software\McNeel\Rhinoceros\8.0\Plug-ins\Heatherwick-Studio-Toolbar"
         
         if (-not (Test-Path $registryPath)) {
             New-Item -Path $registryPath -Force | Out-Null
         }
         
-        Set-ItemProperty -Path $registryPath -Name "Name" -Value "HeatherwickStudioToolbar" -Type String
+        Set-ItemProperty -Path $registryPath -Name "Name" -Value "Heatherwick-Studio-Toolbar" -Type String
         Set-ItemProperty -Path $registryPath -Name "Path" -Value (Join-Path $pluginDir "Heatherwick Studio Toolbar.rhp") -Type String
         Set-ItemProperty -Path $registryPath -Name "LoadMode" -Value 1 -Type DWord
         
@@ -266,7 +266,7 @@ try {
         Write-Host "Installation Complete!" -ForegroundColor Green
         Write-Host "========================================" -ForegroundColor Green
         Write-Host ""
-        Write-Host "Plugin installed to: $env:APPDATA\McNeel\Rhinoceros\8.0\packages\HeatherwickStudioToolbar" -ForegroundColor Yellow
+        Write-Host "Plugin installed to: $env:APPDATA\McNeel\Rhinoceros\packages\8.0\Heatherwick-Studio-Toolbar" -ForegroundColor Yellow
         Write-Host ""
         Write-Host "Next steps:" -ForegroundColor White
         Write-Host "1. Restart Rhino 8" -ForegroundColor White

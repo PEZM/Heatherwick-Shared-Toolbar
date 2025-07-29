@@ -2,7 +2,7 @@
 echo Installing Heatherwick Studio Toolbar...
 
 REM Get the user's AppData folder
-set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\8.0\packages
+set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\packages\8.0
 
 REM Create the directory if it doesn't exist
 if not exist "%APPDATA_PATH%" mkdir "%APPDATA_PATH%"

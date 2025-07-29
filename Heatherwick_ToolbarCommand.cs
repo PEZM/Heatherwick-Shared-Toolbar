@@ -2,6 +2,7 @@ using Rhino;
 using Rhino.Commands;
 using HeatherwickStudio.SharedToolbar;
 using System.Drawing;
+using System.Reflection;
 
 namespace HeatherwickStudio.Toolbar
 {
@@ -22,6 +23,10 @@ namespace HeatherwickStudio.Toolbar
                 RhinoApp.WriteLine("  - Heatherwick_ListCommands (this command)");
                 RhinoApp.WriteLine("  - Heatherwick_LoadToolbar");
                 RhinoApp.WriteLine("");
+                
+                // Test embedded resource loading
+                TestEmbeddedResources();
+                
                 RhinoApp.WriteLine("Plugin is working correctly!");
                 RhinoApp.WriteLine("=== End Commands ===\n");
                 
@@ -31,6 +36,64 @@ namespace HeatherwickStudio.Toolbar
             {
                 RhinoApp.WriteLine($"Error listing commands: {ex.Message}");
                 return Result.Failure;
+            }
+        }
+        
+        /// <summary>
+        /// Test if embedded resources can be loaded
+        /// </summary>
+        private void TestEmbeddedResources()
+        {
+            try
+            {
+                RhinoApp.WriteLine("=== Testing Embedded Resources ===");
+                
+                var assembly = this.GetType().Assembly;
+                RhinoApp.WriteLine($"Assembly: {assembly.FullName}");
+                
+                // List all embedded resources
+                var resources = assembly.GetManifestResourceNames();
+                RhinoApp.WriteLine($"Total embedded resources: {resources.Length}");
+                foreach (var resource in resources)
+                {
+                    RhinoApp.WriteLine($"  - {resource}");
+                }
+                
+                // Try to load the ListCommands.ico
+                var iconResourceName = "Heatherwick_Studio_Toolbar.EmbeddedResources.ListCommands.ico";
+                using (var stream = assembly.GetManifestResourceStream(iconResourceName))
+                {
+                    if (stream != null)
+                    {
+                        RhinoApp.WriteLine($"✅ Successfully loaded {iconResourceName}");
+                        RhinoApp.WriteLine($"  Stream length: {stream.Length} bytes");
+                    }
+                    else
+                    {
+                        RhinoApp.WriteLine($"❌ Failed to load {iconResourceName}");
+                    }
+                }
+                
+                // Try to load the plugin-utility.ico
+                var pluginIconResourceName = "Heatherwick_Studio_Toolbar.EmbeddedResources.plugin-utility.ico";
+                using (var stream = assembly.GetManifestResourceStream(pluginIconResourceName))
+                {
+                    if (stream != null)
+                    {
+                        RhinoApp.WriteLine($"✅ Successfully loaded {pluginIconResourceName}");
+                        RhinoApp.WriteLine($"  Stream length: {stream.Length} bytes");
+                    }
+                    else
+                    {
+                        RhinoApp.WriteLine($"❌ Failed to load {pluginIconResourceName}");
+                    }
+                }
+                
+                RhinoApp.WriteLine("=== End Embedded Resources Test ===");
+            }
+            catch (System.Exception ex)
+            {
+                RhinoApp.WriteLine($"Error testing embedded resources: {ex.Message}");
             }
         }
     }

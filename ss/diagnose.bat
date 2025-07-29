@@ -8,7 +8,7 @@ REM Get the username from environment
 set USERNAME=%USERNAME%
 
 REM Define the target directories
-set RHINO_PACKAGES_DIR=C:\Users\%USERNAME%\AppData\Roaming\McNeel\Rhinoceros\8.0\packages
+set RHINO_PACKAGES_DIR=C:\Users\%USERNAME%\AppData\Roaming\McNeel\Rhinoceros\packages\8.0
 set HEATHERWICK_STUDIO_DIR=C:\Users\%USERNAME%\AppData\Roaming\HeatherwickStudio
 
 echo Checking directories...

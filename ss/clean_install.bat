@@ -2,25 +2,27 @@
 echo Cleaning and Installing Heatherwick Studio Toolbar...
 
 REM Get the user's AppData folder
-set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\8.0\packages
+set APPDATA_PATH=%APPDATA%\McNeel\Rhinoceros\packages\8.0
 
 REM Remove old plugin files if they exist
 echo Removing old plugin files...
-if exist "%APPDATA_PATH%\Heatherwick Studio Toolbar.rhp" del "%APPDATA_PATH%\Heatherwick Studio Toolbar.rhp"
-if exist "%APPDATA_PATH%\Heatherwick Studio Toolbar.rui" del "%APPDATA_PATH%\Heatherwick Studio Toolbar.rui"
+if exist "%APPDATA_PATH%\Heatherwick-Studio-Toolbar" rmdir /S /Q "%APPDATA_PATH%\Heatherwick-Studio-Toolbar"
 
 REM Create the directory if it doesn't exist
 if not exist "%APPDATA_PATH%" mkdir "%APPDATA_PATH%"
 
-REM Copy the plugin files
-echo Copying plugin files...
-copy "bin\Debug\net7.0\Heatherwick Studio Toolbar.rhp" "%APPDATA_PATH%\"
-copy "bin\Debug\net7.0\Heatherwick Studio Toolbar.rui" "%APPDATA_PATH%\"
+REM Install using Yak package
+echo Installing Yak package...
+echo Please install the Yak package manually:
+echo 1. Open Rhino 8
+echo 2. Go to Tools -> Package Manager
+echo 3. Click "Install from file"
+echo 4. Select: bin\Debug\heatherwick-studio-toolbar-1.0.1-rh8_0-any.yak
 
 echo.
 echo Clean installation complete!
 echo.
-echo Files installed to: %APPDATA_PATH%
+echo Package will be installed to: %APPDATA_PATH%\Heatherwick-Studio-Toolbar
 echo.
 echo IMPORTANT: You need to restart Rhino 8 completely for the changes to take effect.
 echo The plugin should now load from the correct location and use the correct GUID.
